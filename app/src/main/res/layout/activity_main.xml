@@ -1,46 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="16dp">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Sampling Frequency" />
-
-    <Spinner
-        android:id="@+id/frequency"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/startrec"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Recording" />
-
-    <Button
-        android:id="@+id/stoprec"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop Recording" />
-
-    <Button
-        android:id="@+id/playback"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Play Back" />
-
-    <Button
-        android:id="@+id/recAndPlay"
+    <LinearLayout
+        android:id="@+id/envVolLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Record and Play Simultanously"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/envVolLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:text="Environment Volume"/>
+
+        <ProgressBar
+            android:id="@+id/envVol"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/headVolLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/envVolLayout"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/headphoneVolLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:ems="8"
+            android:text="Headphone Volume"/>
+
+        <ProgressBar
+            android:id="@+id/headVol"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/browseAudioLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headVolLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:text="Headphone Audio File"/>
+
+    <LinearLayout
+        android:id="@+id/browseAudioLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/browseAudioLabel"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/songName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Led Zeppelin - The Rain Song (default)"/>
+
+        <ImageButton
+            android:id="@+id/browseAudio"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_folder_open_indigo_900_18dp"
+            />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/recAndPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:src="@drawable/ic_play_arrow_white_18dp"
+        app:backgroundTint="#122d83"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:text="Follow Environment Sound Volume"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="48dp"
+        android:text="Immediately"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="48dp"
+        android:text="Slowly"/>
+
+    <SeekBar
+        android:id="@+id/followingFactor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:max="1000"
+        android:progress="500"/>
+
+</RelativeLayout>
