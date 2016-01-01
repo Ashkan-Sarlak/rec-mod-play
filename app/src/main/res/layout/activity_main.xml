@@ -20,6 +20,12 @@
             android:ems="8"
             android:text="Environment Volume"/>
 
+        <com.github.ashkansarlak.recmodplay.customviews.VolumeMeter
+            android:id="@+id/envVolMeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:meterColor="@color/red"/>
+
         <ProgressBar
             android:id="@+id/envVol"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -84,14 +90,13 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/recAndPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:clickable="true"
-        android:src="@drawable/ic_play_arrow_white_18dp"
-        app:backgroundTint="#122d83"/>
+        android:src="@drawable/ic_play_arrow_white_18dp"/>
 
     <TextView
         android:layout_width="wrap_content"

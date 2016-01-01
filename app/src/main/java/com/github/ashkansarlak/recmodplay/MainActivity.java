@@ -3,54 +3,38 @@ package com.github.ashkansarlak.recmodplay;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.OpenableColumns;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.github.ashkansarlak.recmodplay.customviews.VolumeMeter;
+
 import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int SAMPLING_FREQUENCY = 44100;
     private final static int RQS_OPEN_AUDIO_MP3 = 1;
+    private static final int MAX_GAIN = 8000;
 
-    private FloatingActionButton recAndPlay;
+    private ImageButton recAndPlay;
     private boolean recording;
     private MediaPlayer mediaPlayer;
     private SeekBar followingFactorSeekbar;
     private ProgressBar envVol, headVol;
     private ImageButton browseAudio;
     private TextView songName;
+    private VolumeMeter envVolMeter;
 
     /**
      * Called when the activity is first created.
@@ -60,11 +44,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        new AudioOut().start();
+
         mediaPlayer = MediaPlayer.create(this, R.raw.music);
-        recAndPlay = (FloatingActionButton) findViewById(R.id.recAndPlay);
+        recAndPlay = (ImageButton) findViewById(R.id.recAndPlay);
         recAndPlay.setOnClickListener(recAndPlayOnClickListener);
         followingFactorSeekbar = (SeekBar) findViewById(R.id.followingFactor);
         envVol = (ProgressBar) findViewById(R.id.envVol);
+        envVolMeter = (VolumeMeter) findViewById(R.id.envVolMeter);
+        envVolMeter.setMax(MAX_GAIN);
         headVol = (ProgressBar) findViewById(R.id.headVol);
         browseAudio = (ImageButton) findViewById(R.id.browseAudio);
         browseAudio.setOnClickListener(browseAudioClickListener);
@@ -80,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setType("audio/mp3");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(
-                    intent, "Select an MP3 file to play through headphones"), RQS_OPEN_AUDIO_MP3);
+                    intent, "Select an MP3 file to start through headphones"), RQS_OPEN_AUDIO_MP3);
 
         }
     };
@@ -143,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void recAndPlay() {
-        int sampleFreq = SAMPLING_FREQUENCY;
+        int sampleFreq = Const.SAMPLING_FREQUENCY;
         int minBufferSize = AudioRecord.getMinBufferSize(sampleFreq,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
@@ -165,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
             double gain = getGain(audioData, numberOfShort);
             Log.v("GAIN", String.valueOf(gain / 2000));
             setVolumeTarget(gain / 2000);
-            showVolume(envVol, gain/ 2000);
+            showVolume(envVol, gain / 2000);
+            envVolMeter.setCurrent(gain);
         }
 
         audioRecord.stop();
